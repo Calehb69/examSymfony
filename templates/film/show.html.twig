@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails sur le film{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+        <div class="example-wrapper">
+            <h2><strong>Titre : {{ film.nom }}</strong></h2>
+            <hr>
+            <h3>Réalisateur: <br>{{ film.realisateur }}</h3>
+            <hr>
+            <h3>Résumé : <br>{{ film.resume }}</h3>
+            <hr>
+            <h3>Date de sortie : <br>{{ film.createdAt|date('Y') }}</h3>
+            <br>
+        </div>
+
+    <div>
+        {% for impression in film.impressions %}
+            <hr>
+            <h3>Avis : </h3>
+            <p>{{ impression.contenu }}</p>
+                <a href="{{path('impression_suppr',{id:impression.id})}}" class="btn btn-danger"><strong>X</strong></a>
+                <a href="{{ path('impression_change',{id:impression.id})}}" class="btn btn-warning">Modifier</a>
+            <hr>
+        {% endfor %}
+    </div>
+    <div>
+
+        {{ form_start(formulaire, {'action':path('impression_new', {id:film.id})}) }}
+
+        {{ form_widget(formulaire.contenu, {'attr':{'placeholder':'votre impression sur le film'}}) }}
+
+        {{ form_errors(formulaire.contenu) }}
+        <br>
+        <button type="submit" class="btn btn-success">Poster</button>
+
+        {{ form_end(formulaire) }}
+    </div>
+    <br>
+    <a href="{{ path('film') }}">Retour à l'accueil de la bibliothèque</a>
+{% endblock %}
